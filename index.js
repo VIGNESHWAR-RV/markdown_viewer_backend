@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import nodemailer from "nodemailer";
 import {user_Auth} from "./authenticationMiddleware/Auth.js";
-import { response } from "express";
+
 
 dotenv.config();
 
@@ -188,7 +188,7 @@ async function linkMailer(user_email,id,response) {
   
   const verificationString = generateRandomString();
 
-  const passwordResetPage = `http://localhost:3000/password_Reset/${id}&${verificationString}`;
+  const passwordResetPage = `https://markdown-viewer-by-rv.herokuapp.com/password_Reset/${id}&${verificationString}`;
   
  
   var mailOptions = {
