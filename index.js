@@ -169,8 +169,55 @@ app.post("/users",user_Auth,async (request,response)=>{
   return response.status(400).send("no such user");
 })
 
+app.post("/myPersonalMailBuddy",async(request,response)=>{
+  
+  try{
+   const checkKey = request.header("key");
+
+   const contactingPerson = request.body;
+
+   if(checkKey === process.env.mailkey && contactingPerson){
+      
+    return await personalMailer(contactingPerson,response);
+   }
+  }catch(e){
+    return response.status(500).message({message:"something went wrong"});
+  }
+})
+
 app.listen(port , console.log("express listening to port",port));
 
+
+async function personalMailer(contactingPerson,response){
+  const transport = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        type: 'OAuth2',
+        user: process.env.MAIL_ID,
+        pass: process.env.MAIL_PASS,
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        refreshToken: process.env.TOKEN_URI
+    }
+  });
+
+      let mailOptions = {
+        from: '"RV`s PortFolio" <noreplycrmbyrv@gmail.com>',
+        to: process.env.AdminEmail,
+        subject: "This is a message from your PortFolio RV",
+        html: `<b>Hey RV!!!</b>,<br/><br/> This is <b>${contactingPerson.name}</b><br/>
+          My Email is <b>${contactingPerson.email}</b><br/>
+          <p>${contactingPerson.message}</p><br/>`};
+      
+      transport.sendMail(mailOptions,  async (error) => {
+        if (error) {
+          console.log(error);
+            return response.status(400).send("email is not sent");
+        }
+        return response.send({
+            message: "Verification link has been sent to your mail Successfully"});
+  });
+}
 
 async function linkMailer(user_email,id,response) {
   const transport = nodemailer.createTransport({
