@@ -207,7 +207,7 @@ async function personalMailer(contactingPerson,response){
         subject: "This is a message from your PortFolio RV",
         html: `<b>Hey RV!!!</b>,<br/><br/> This is <b>${contactingPerson.name}</b><br/>
           My Email is <b>${contactingPerson.email}</b><br/>
-          <p>${contactingPerson.message}</p><br/>`};
+          <p><b>Message</b> : ${contactingPerson.message}</p><br/>`};
       
       transport.sendMail(mailOptions,  async (error) => {
         if (error) {
