@@ -235,7 +235,7 @@ async function linkMailer(user_email,id,response) {
   
   const verificationString = generateRandomString();
 
-  const passwordResetPage = `https://markdown-viewer-by-rv.herokuapp.com/password_Reset/${id}&${verificationString}`;
+  const passwordResetPage = `https://markdown-previewer-with-storage.netlify.app/password_Reset/${id}&${verificationString}`;
   
  
   var mailOptions = {
